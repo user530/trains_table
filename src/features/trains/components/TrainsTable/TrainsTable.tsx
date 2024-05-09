@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
 
 export const TrainsTable = () => {
     const dispatch = useAppDispatch();
-    const { trains, error, isLoading } = useAppSelector(selectTrainsState);
+    const { trains, selectedTrain, error, isLoading } = useAppSelector(selectTrainsState);
 
     React.useEffect(
         () => {
@@ -23,21 +23,24 @@ export const TrainsTable = () => {
         return <span>Error: {error}</span>
 
     return (
-        <table>
-            <thead>
-                <tr>
-                    <td>Название</td>
-                    <td>Описание</td>
-                </tr >
-            </thead >
+        <>
+            {selectedTrain && <h2>Selected {selectedTrain?.name}</h2>}
+            <table>
+                <thead>
+                    <tr>
+                        <td>Название</td>
+                        <td>Описание</td>
+                    </tr >
+                </thead >
 
-            <tbody>
-                {
-                    trains.map(
-                        (train) => <TrainTableRow key={train.id} {...train} />
-                    )
-                }
-            </tbody>
-        </table >
+                <tbody>
+                    {
+                        trains.map(
+                            (train) => <TrainTableRow key={train.id} trainData={train} />
+                        )
+                    }
+                </tbody>
+            </table >
+        </>
     )
 }

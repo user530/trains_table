@@ -1,16 +1,19 @@
 import React from 'react';
+import { useAppDispatch } from '../../../../app/hooks';
+import { setSelectedTrain } from '../../trainsSlice'
+import { ITrain } from '../../types';
 
 interface ITrainTableRow {
-    id: number;
-    name: string;
-    description: string;
+    trainData: ITrain;
 }
 
 export const TrainTableRow: React.FC<ITrainTableRow> = (props: ITrainTableRow) => {
-    const { id, name, description } = props;
+    const { trainData: { id, name, description } } = props;
+    const dispatch = useAppDispatch();
 
     const clickHandler = () => {
         console.log('Clicked table row ', id);
+        dispatch(setSelectedTrain(props.trainData));
     };
 
     return (
