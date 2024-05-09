@@ -1,91 +1,65 @@
+import React from 'react';
 import { TrainTableRow } from '../TrainTableRow/TrainTableRow';
+import { fetchTrains } from '../../trainsAPI';
+import { ITrain } from '../../types';
 
 export const TrainsTable = () => {
-    const placeholderData = [
-        {
-            id: 1,
-            name: 'Train1',
-            description: 'Description Train1',
-            characteristics: [
-                {
-                    "speed": 0,
-                    "force": 677.18,
-                    "engineAmperage": 1150
-                },
-                {
-                    "speed": 10,
-                    "force": 584.08,
-                    "engineAmperage": 1030
-                },
-                {
-                    "speed": 20,
-                    "force": 548.8,
-                    "engineAmperage": 980
-                },
-            ]
+    const [isLoading, setIsLoading] = React.useState<boolean>(false);
+    const [trains, setTrains] = React.useState<ITrain[]>([]);
+
+    React.useEffect(
+        () => {
+            try {
+                setIsLoading(true);
+                fetchTrains(process.env.REACT_APP_TRAINS_URL ?? 'badurl')
+                    .then(
+                        data => {
+                            if (!Array.isArray(data))
+                                throw new Error('Wrong data type!');
+
+                            const trainsData: ITrain[] = (data as any[]).map(
+                                (item, index) => ({
+                                    id: index,
+                                    name: item.name ?? 'No name',
+                                    description: item.description ?? 'No description',
+                                    characteristics: item.characteristics ?? [],
+                                })
+                            );
+
+                            setTrains(trainsData);
+                        }
+                    )
+                    .catch(
+                        err => console.error(err)
+                    )
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setIsLoading(false);
+            }
+
         },
-        {
-            id: 2,
-            name: 'Train2',
-            description: 'Description Train2',
-            characteristics: [
-                {
-                    "speed": 0,
-                    "force": 677.18,
-                    "engineAmperage": 1150
-                },
-                {
-                    "speed": 10,
-                    "force": 584.08,
-                    "engineAmperage": 1030
-                },
-                {
-                    "speed": 20,
-                    "force": 548.8,
-                    "engineAmperage": 980
-                },
-            ]
-        },
-        {
-            id: 3,
-            name: 'Train3',
-            description: 'Description Train3',
-            characteristics: [
-                {
-                    "speed": 0,
-                    "force": 677.18,
-                    "engineAmperage": 1150
-                },
-                {
-                    "speed": 10,
-                    "force": 584.08,
-                    "engineAmperage": 1030
-                },
-                {
-                    "speed": 20,
-                    "force": 548.8,
-                    "engineAmperage": 980
-                },
-            ]
-        },
-    ];
+        []
+    )
 
     return (
-        <table>
-            <thead>
-                <tr>
-                    <td>Название</td>
-                    <td>Описание</td>
-                </tr>
-            </thead>
+        isLoading
+            ? <span>Spinner</span>
+            : <table>
+                <thead>
+                    <tr>
+                        <td>Название</td>
+                        <td>Описание</td>
+                    </tr>
+                </thead>
 
-            <tbody>
-                {
-                    placeholderData.map(
-                        (train) => <TrainTableRow key={train.id} {...train} />
-                    )
-                }
-            </tbody>
-        </table>
+                <tbody>
+                    {
+                        trains.map(
+                            (train) => <TrainTableRow key={train.id} {...train} />
+                        )
+                    }
+                </tbody>
+            </table>
     )
 }
