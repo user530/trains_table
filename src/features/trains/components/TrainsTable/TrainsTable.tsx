@@ -2,64 +2,42 @@ import React from 'react';
 import { TrainTableRow } from '../TrainTableRow/TrainTableRow';
 import { fetchTrains } from '../../trainsAPI';
 import { ITrain } from '../../types';
+import { loadTrains, selectTrainsState } from '../../trainsSlice';
+import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
 
 export const TrainsTable = () => {
-    const [isLoading, setIsLoading] = React.useState<boolean>(false);
-    const [trains, setTrains] = React.useState<ITrain[]>([]);
+    const dispatch = useAppDispatch();
+    const { trains, error, isLoading } = useAppSelector(selectTrainsState);
 
     React.useEffect(
         () => {
-            try {
-                setIsLoading(true);
-                fetchTrains(process.env.REACT_APP_TRAINS_URL ?? 'badurl')
-                    .then(
-                        data => {
-                            if (!Array.isArray(data))
-                                throw new Error('Wrong data type!');
-
-                            const trainsData: ITrain[] = (data as any[]).map(
-                                (item, index) => ({
-                                    id: index,
-                                    name: item.name ?? 'No name',
-                                    description: item.description ?? 'No description',
-                                    characteristics: item.characteristics ?? [],
-                                })
-                            );
-
-                            setTrains(trainsData);
-                        }
-                    )
-                    .catch(
-                        err => console.error(err)
-                    )
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setIsLoading(false);
-            }
-
+            dispatch(loadTrains());
         },
         []
     )
 
-    return (
-        isLoading
-            ? <span>Spinner</span>
-            : <table>
-                <thead>
-                    <tr>
-                        <td>Название</td>
-                        <td>Описание</td>
-                    </tr>
-                </thead>
+    if (isLoading)
+        return <span>Spinner</span>;
 
-                <tbody>
-                    {
-                        trains.map(
-                            (train) => <TrainTableRow key={train.id} {...train} />
-                        )
-                    }
-                </tbody>
-            </table>
+    if (error)
+        return <span>Error: {error}</span>
+
+    return (
+        <table>
+            <thead>
+                <tr>
+                    <td>Название</td>
+                    <td>Описание</td>
+                </tr >
+            </thead >
+
+            <tbody>
+                {
+                    trains.map(
+                        (train) => <TrainTableRow key={train.id} {...train} />
+                    )
+                }
+            </tbody>
+        </table >
     )
 }
