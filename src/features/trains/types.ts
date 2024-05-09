@@ -6,3 +6,7 @@ export interface ITrain {
     description: string;
     characteristics: ITrainCharacteristic[];
 }
+
+export interface ITrainsCollection {
+    trains: ITrain[];
+}
