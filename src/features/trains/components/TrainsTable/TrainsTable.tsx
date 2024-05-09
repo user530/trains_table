@@ -1,7 +1,5 @@
 import React from 'react';
 import { TrainTableRow } from '../TrainTableRow/TrainTableRow';
-import { fetchTrains } from '../../trainsAPI';
-import { ITrain } from '../../types';
 import { loadTrains, selectTrainsState } from '../../trainsSlice';
 import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
 

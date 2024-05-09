@@ -22,11 +22,10 @@ export const loadTrains = createAsyncThunk<ITrain[], void, { rejectValue: string
     'trains/loadTrains',
     async (_, { rejectWithValue }) => {
         try {
-            console.log('Load Trains fired.');
             const data = await fetchTrains();
-            console.log('Data fetched:', data);
+
             const trains = await validateTrains(data);
-            console.log('Data validated:', trains);
+
             return trains;
         } catch (error) {
             console.error(error);
@@ -55,17 +54,15 @@ const trainsSlice = createSlice({
     extraReducers(builder) {
         builder
             .addCase(loadTrains.pending, (state) => {
-                state.error = null;
                 state.isLoading = true;
+                state.error = null;
             })
             .addCase(loadTrains.fulfilled, (state, action) => {
-                console.log('Resolved!');
+                state.error = null;
                 state.trains = action.payload;
                 state.isLoading = false;
-                state.error = null;
             })
             .addCase(loadTrains.rejected, (state, action) => {
-                console.log('Rejected!');
                 state.error = action.payload ?? 'Failed to load trains';
                 state.isLoading = false;
             })
