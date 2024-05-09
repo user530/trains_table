@@ -1,11 +1,14 @@
 import React from 'react';
 import { TrainTableRow } from '../TrainTableRow/TrainTableRow';
-import { loadTrains, selectTrainsState } from '../../trainsSlice';
+import { loadTrains, selectAllTrains, selectError, selectLoadingState } from '../../trainsSlice';
 import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
 
 export const TrainsTable = () => {
+    console.log('Trains Table rendered!');
     const dispatch = useAppDispatch();
-    const { trains, selectedTrain, error, isLoading } = useAppSelector(selectTrainsState);
+    const trains = useAppSelector(selectAllTrains);
+    const isLoading = useAppSelector(selectLoadingState);
+    const error = useAppSelector(selectError);
 
     React.useEffect(
         () => {
@@ -22,7 +25,6 @@ export const TrainsTable = () => {
 
     return (
         <>
-            {selectedTrain && <h2>Selected {selectedTrain?.name}</h2>}
             <table>
                 <thead>
                     <tr>

@@ -8,6 +8,7 @@ interface ITrainTableRow {
 }
 
 export const TrainTableRow: React.FC<ITrainTableRow> = (props: ITrainTableRow) => {
+    console.log(`Train row ${props.trainData.id} rendered!`);
     const { trainData: { id, name, description } } = props;
     const dispatch = useAppDispatch();
 
