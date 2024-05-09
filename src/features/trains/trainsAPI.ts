@@ -1,6 +1,12 @@
-export async function fetchTrains(url: string) {
+export async function fetchTrains() {
     try {
-        const response = await fetch(url)
+        const URL = process.env.REACT_APP_TRAINS_URL;
+
+        if (!URL)
+            throw new Error('No trains fetch URL was provided!');
+
+        const response = await fetch(URL);
+
         if (!response.ok)
             throw new Error(`Http error! Status ${response.status}`);
 
