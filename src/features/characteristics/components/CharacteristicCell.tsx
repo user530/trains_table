@@ -8,7 +8,7 @@ interface ICharacteristicCell {
     valueMutator: (index: number, characteristic: keyof ITrainCharacteristic, newValue: number) => void;
 }
 
-export const CharacteristicCell: React.FC<ICharacteristicCell> = (props: ICharacteristicCell) => {
+export const CharacteristicCell: React.FC<ICharacteristicCell> = React.memo((props: ICharacteristicCell) => {
     const { index, type, value, valueMutator } = props;
     console.log(`Cell from row ${index} of type ${type} is rendered`);
     const [cellValue, setCellValue] = React.useState<number>(value);
@@ -22,7 +22,8 @@ export const CharacteristicCell: React.FC<ICharacteristicCell> = (props: ICharac
     const blurHandler = () => {
         console.log('Validating');
         setIsEditing(() => false);
-        valueMutator(index, type, cellValue);
+        if (cellValue !== value)
+            valueMutator(index, type, cellValue);
     };
 
     const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,14 +32,14 @@ export const CharacteristicCell: React.FC<ICharacteristicCell> = (props: ICharac
         if (isNaN(inputAsNum)) return;
 
         setCellValue(inputAsNum);
-    }
+    };
 
     const keyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (!inputRef.current) return;
 
         if (e.key === 'Enter')
             inputRef.current.blur();
-    }
+    };
 
     React.useEffect(
         () => {
@@ -47,7 +48,7 @@ export const CharacteristicCell: React.FC<ICharacteristicCell> = (props: ICharac
                 inputRef.current.focus();
         },
         [isEditing]
-    )
+    );
 
     return (
         <td onClick={cellClickHandler}>
@@ -65,5 +66,5 @@ export const CharacteristicCell: React.FC<ICharacteristicCell> = (props: ICharac
                     : cellValue
             }
         </td>
-    )
-}
+    );
+})

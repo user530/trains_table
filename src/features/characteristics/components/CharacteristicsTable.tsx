@@ -18,18 +18,20 @@ export const CharacteristicsTable = () => {
         [characteristics]
     );
 
+    const mutateCell = React.useCallback(
+        (index: number, characteristic: keyof ITrainCharacteristic, newValue: number) => {
+            if (mutableData[index] && characteristic in mutableData[index])
+                setMutableData(
+                    (prevData) => prevData.map(
+                        (item, ind) => ind !== index ? item : { ...item, [characteristic]: newValue }
+                    )
+                );
+        },
+        []
+    );
 
     if (!characteristics)
         return <></>;
-
-    const mutateCell = (index: number, characteristic: keyof ITrainCharacteristic, newValue: number) => {
-        if (mutableData[index] && characteristic in mutableData[index])
-            setMutableData(
-                mutableData.map(
-                    (item, ind) => ind !== index ? item : { ...item, [characteristic]: newValue }
-                )
-            );
-    }
 
     return (
         <table>
@@ -44,7 +46,7 @@ export const CharacteristicsTable = () => {
                 {
                     mutableData.map(
                         ({ speed, force, engineAmperage }, ind) => (
-                            <tr key={speed + force + engineAmperage} >
+                            <tr key={ind} >
                                 <CharacteristicCell key={engineAmperage} index={ind} type='engineAmperage' value={engineAmperage} valueMutator={mutateCell} />
                                 <CharacteristicCell key={force} index={ind} type='force' value={force} valueMutator={mutateCell} />
                                 <CharacteristicCell key={speed} index={ind} type='speed' value={speed} valueMutator={mutateCell} />
@@ -54,5 +56,5 @@ export const CharacteristicsTable = () => {
                 }
             </tbody>
         </table>
-    )
+    );
 } 
