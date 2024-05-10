@@ -8,30 +8,62 @@ interface ICharacteristicCell {
     valueMutator: (index: number, characteristic: keyof ITrainCharacteristic, newValue: number) => void;
 }
 
+function isValidCharacteristic(type: keyof ITrainCharacteristic, value: unknown): boolean {
+    if (typeof value !== 'number' || isNaN(value) || !isFinite(value))
+        return false;
+
+    switch (type) {
+        case 'speed':
+            return Number.isInteger(value) && value >= 0;
+        case 'force':
+            // Base force data include some intergers, so I assume we validate both ints and floats
+            return value > 0
+        case 'engineAmperage':
+            return Number.isInteger(value) && value > 0;
+        default:
+            return false;
+    };
+}
+
 export const CharacteristicCell: React.FC<ICharacteristicCell> = React.memo((props: ICharacteristicCell) => {
     const { index, type, value, valueMutator } = props;
-    console.log(`Cell from row ${index} of type ${type} is rendered`);
-    const [cellValue, setCellValue] = React.useState<number>(value);
-    const [isEditing, setIsEditing] = React.useState<boolean>(false);
+    console.log(`Cell from row ${index}, of type ${type} with value ${value} rendered!`);
     const inputRef = React.useRef<HTMLInputElement>(null);
+    const [cellValue, setCellValue] = React.useState<string>(value.toString());
+    const [isEditing, setIsEditing] = React.useState<boolean>(false);
+    const [isValid] = React.useState<boolean>(isValidCharacteristic(type, value));
 
     const cellClickHandler = () => {
         setIsEditing(prev => !prev);
     };
 
     const blurHandler = () => {
-        console.log('Validating');
-        setIsEditing(() => false);
-        if (cellValue !== value)
-            valueMutator(index, type, cellValue);
+        setIsEditing(false);
+
+        // Guard against invalid inputs
+        const valAsNumber = (
+            cellValue.trim() === ''
+            || cellValue.trim() === '-'
+            || isNaN(+cellValue)
+        )
+            ? 0
+            : +cellValue;
+
+        // If value is changed -> update state
+        if (valAsNumber !== value)
+            valueMutator(index, type, valAsNumber);
+
+        // If cell displayed value is invalid number (differs from the parsed number -> update it)
+        if (cellValue !== valAsNumber.toString())
+            setCellValue(valAsNumber.toString());
     };
 
     const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const inputAsNum = +e.target.value;
+        const { value } = e.target;
 
-        if (isNaN(inputAsNum)) return;
-
-        setCellValue(inputAsNum);
+        // Filter out illegal symbols
+        if (value === '' || /^-?\d*\.?\d*$/.test(value))
+            setCellValue(value);
     };
 
     const keyPressHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -51,7 +83,10 @@ export const CharacteristicCell: React.FC<ICharacteristicCell> = React.memo((pro
     );
 
     return (
-        <td onClick={cellClickHandler}>
+        <td
+            onClick={cellClickHandler}
+            style={!isValid ? { backgroundColor: 'red', color: 'white' } : {}}
+        >
             {
                 isEditing
                     ?
