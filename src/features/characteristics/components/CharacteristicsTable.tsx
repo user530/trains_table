@@ -47,9 +47,24 @@ export const CharacteristicsTable = () => {
                     mutableData.map(
                         ({ speed, force, engineAmperage }, ind) => (
                             <tr key={ind} >
-                                <CharacteristicCell key={engineAmperage} index={ind} type='engineAmperage' value={engineAmperage} valueMutator={mutateCell} />
-                                <CharacteristicCell key={force} index={ind} type='force' value={force} valueMutator={mutateCell} />
-                                <CharacteristicCell key={speed} index={ind} type='speed' value={speed} valueMutator={mutateCell} />
+                                <CharacteristicCell
+                                    key={'engineAmperage' + engineAmperage}
+                                    index={ind}
+                                    type='engineAmperage' value={engineAmperage}
+                                    valueMutator={mutateCell}
+                                />
+                                <CharacteristicCell
+                                    key={'force' + force}
+                                    index={ind}
+                                    type='force' value={force}
+                                    valueMutator={mutateCell}
+                                />
+                                <CharacteristicCell
+                                    key={'speed' + speed}
+                                    index={ind}
+                                    type='speed' value={speed}
+                                    valueMutator={mutateCell}
+                                />
                             </tr>
                         )
                     )
