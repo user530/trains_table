@@ -73,6 +73,7 @@ export const { setTrains, resetTrains, setSelectedTrain, resetSelectedTrain } = 
 
 export const selectAllTrains = (state: RootState) => state.trains.trains;
 export const selectChosenTrain = (state: RootState) => state.trains.selectedTrain;
+export const selectCharacteristics = (state: RootState) => state.trains.selectedTrain?.characteristics;
 export const selectError = (state: RootState) => state.trains.error;
 export const selectLoadingState = (state: RootState) => state.trains.isLoading;
 
