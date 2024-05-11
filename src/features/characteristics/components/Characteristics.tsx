@@ -1,6 +1,7 @@
 import { useAppSelector } from '../../../app/hooks'
 import { selectChosenTrain } from '../../trains/trainsSlice'
 import { selectAllCharacteristics, selectCharacteristicsErrors } from '../characteristicsSlice';
+import { CharacteristicRow } from './CharacteristicRow';
 import { CharacteristicsTable } from './CharacteristicsTable';
 
 export const Characteristics = () => {
@@ -27,7 +28,19 @@ export const Characteristics = () => {
             <h2>{name}</h2>
             <h5>{description}</h5>
 
-            <CharacteristicsTable />
+            <CharacteristicsTable >
+                {
+                    characteristics && characteristics.map(
+                        (characteristic, index) => (
+                            <CharacteristicRow
+                                key={index}
+                                rowIndex={index}
+                                rowCharacteristics={characteristic}
+                            />
+                        )
+                    )
+                }
+            </CharacteristicsTable>
 
             <button
                 disabled={charErrors.length > 0}

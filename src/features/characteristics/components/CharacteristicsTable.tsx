@@ -1,15 +1,7 @@
-import React from 'react';
-import { useAppSelector } from '../../../app/hooks';
-import { selectAllCharacteristics } from '../characteristicsSlice';
-import { CharacteristicRow } from './CharacteristicRow';
+import { PropsWithChildren } from 'react';
 
-export const CharacteristicsTable = () => {
+export const CharacteristicsTable = ({ children }: PropsWithChildren) => {
     console.log('Characteristics Table rendered!');
-
-    const characteristics = useAppSelector(selectAllCharacteristics);
-
-    if (!characteristics)
-        return <></>;
 
     return (
         <table>
@@ -21,17 +13,7 @@ export const CharacteristicsTable = () => {
                 </tr>
             </thead>
             <tbody>
-                {
-                    characteristics.map(
-                        (characteristic, index) => (
-                            <CharacteristicRow
-                                key={index}
-                                rowIndex={index}
-                                rowCharacteristics={characteristic}
-                            />
-                        )
-                    )
-                }
+                {children}
             </tbody>
         </table>
     );
