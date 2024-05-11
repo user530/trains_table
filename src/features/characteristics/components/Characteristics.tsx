@@ -13,7 +13,7 @@ export const Characteristics = () => {
     if (!selectedTrain)
         return <></>
 
-    const { name, description } = selectedTrain;
+    const { name } = selectedTrain;
 
     const btnClickHandler = () => {
         const sortedCharacteristics = [...characteristics].sort(
@@ -24,25 +24,28 @@ export const Characteristics = () => {
     }
 
     return (
-        <div>
-            <h2>{name}</h2>
-            <h5>{description}</h5>
+        <div className='w-full md:w-2/3 flex flex-col'>
+            <div className='w-full py-4 px-4 bg-white'>
+                <h2 className='text-2xl font-semibold mb-1'>Характеристики</h2>
+                <h5 className='text-lg font-semibold mb-3'>{name}</h5>
 
-            <CharacteristicsTable >
-                {
-                    characteristics && characteristics.map(
-                        (characteristic, index) => (
-                            <CharacteristicRow
-                                key={index}
-                                rowIndex={index}
-                                rowCharacteristics={characteristic}
-                            />
+                <CharacteristicsTable>
+                    {
+                        characteristics && characteristics.map(
+                            (characteristic, index) => (
+                                <CharacteristicRow
+                                    key={index}
+                                    rowIndex={index}
+                                    rowCharacteristics={characteristic}
+                                />
+                            )
                         )
-                    )
-                }
-            </CharacteristicsTable>
+                    }
+                </CharacteristicsTable>
+            </div>
 
             <button
+                className='bg-gray-500 hover:bg-gray-700 text-white font-bold py-4 px-4 rounded block mx-auto mt-10 disabled:cursor-not-allowed'
                 disabled={charErrors.length > 0}
                 onClick={btnClickHandler}
             >Отправить данные</button>
