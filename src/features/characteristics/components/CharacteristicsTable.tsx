@@ -1,34 +1,12 @@
 import React from 'react';
-import { useAppSelector } from '../../../app/hooks'
-import { selectCharacteristics } from '../../trains/trainsSlice';
-import { ITrainCharacteristic } from '../types';
+import { useAppSelector } from '../../../app/hooks';
 import { CharacteristicCell } from './CharacteristicCell';
+import { selectAllCharacteristics } from '../characteristicsSlice';
 
 export const CharacteristicsTable = () => {
     console.log('Characteristics Table rendered!');
-    const characteristics = useAppSelector(selectCharacteristics);
-    console.log(characteristics);
-    const [mutableData, setMutableData] = React.useState<ITrainCharacteristic[]>(characteristics ?? []);
-    console.log(mutableData);
 
-    React.useEffect(
-        () => {
-            setMutableData(characteristics ?? []);
-        },
-        [characteristics]
-    );
-
-    const mutateCell = React.useCallback(
-        (index: number, characteristic: keyof ITrainCharacteristic, newValue: number) => {
-            if (mutableData[index] && characteristic in mutableData[index])
-                setMutableData(
-                    (prevData) => prevData.map(
-                        (item, ind) => ind !== index ? item : { ...item, [characteristic]: newValue }
-                    )
-                );
-        },
-        []
-    );
+    const characteristics = useAppSelector(selectAllCharacteristics);
 
     if (!characteristics)
         return <></>;
@@ -44,26 +22,26 @@ export const CharacteristicsTable = () => {
             </thead>
             <tbody>
                 {
-                    mutableData.map(
+                    characteristics.map(
                         ({ speed, force, engineAmperage }, ind) => (
                             <tr key={ind} >
                                 <CharacteristicCell
                                     key={'engineAmperage' + engineAmperage}
                                     index={ind}
-                                    type='engineAmperage' value={engineAmperage}
-                                    valueMutator={mutateCell}
+                                    type='engineAmperage'
+                                    value={engineAmperage}
                                 />
                                 <CharacteristicCell
                                     key={'force' + force}
                                     index={ind}
-                                    type='force' value={force}
-                                    valueMutator={mutateCell}
+                                    type='force'
+                                    value={force}
                                 />
                                 <CharacteristicCell
                                     key={'speed' + speed}
                                     index={ind}
-                                    type='speed' value={speed}
-                                    valueMutator={mutateCell}
+                                    type='speed'
+                                    value={speed}
                                 />
                             </tr>
                         )

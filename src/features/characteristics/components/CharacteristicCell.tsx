@@ -1,11 +1,12 @@
 import React from 'react';
 import { ITrainCharacteristic } from '../types';
+import { useAppDispatch } from '../../../app/hooks';
+import { updateCharacteristic } from '../characteristicsSlice';
 
 interface ICharacteristicCell {
     index: number;
     type: keyof ITrainCharacteristic;
     value: number;
-    valueMutator: (index: number, characteristic: keyof ITrainCharacteristic, newValue: number) => void;
 }
 
 function isValidCharacteristic(type: keyof ITrainCharacteristic, value: unknown): boolean {
@@ -26,9 +27,12 @@ function isValidCharacteristic(type: keyof ITrainCharacteristic, value: unknown)
 }
 
 export const CharacteristicCell: React.FC<ICharacteristicCell> = React.memo((props: ICharacteristicCell) => {
-    const { index, type, value, valueMutator } = props;
+    const { index, type, value } = props;
     console.log(`Cell from row ${index}, of type ${type} with value ${value} rendered!`);
+    const dispatch = useAppDispatch();
+
     const inputRef = React.useRef<HTMLInputElement>(null);
+
     const [cellValue, setCellValue] = React.useState<string>(value.toString());
     const [isEditing, setIsEditing] = React.useState<boolean>(false);
     const [isValid] = React.useState<boolean>(isValidCharacteristic(type, value));
@@ -51,7 +55,7 @@ export const CharacteristicCell: React.FC<ICharacteristicCell> = React.memo((pro
 
         // If value is changed -> update state
         if (valAsNumber !== value)
-            valueMutator(index, type, valAsNumber);
+            dispatch(updateCharacteristic({ charIndex: index, charName: type, charValue: valAsNumber }));
 
         // If cell displayed value is invalid number (differs from the parsed number -> update it)
         if (cellValue !== valAsNumber.toString())
