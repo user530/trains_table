@@ -7,27 +7,11 @@ interface ICharacteristicCell {
     index: number;
     type: keyof ITrainCharacteristic;
     value: number;
-}
-
-function isValidCharacteristic(type: keyof ITrainCharacteristic, value: unknown): boolean {
-    if (typeof value !== 'number' || isNaN(value) || !isFinite(value))
-        return false;
-
-    switch (type) {
-        case 'speed':
-            return Number.isInteger(value) && value >= 0;
-        case 'force':
-            // Base force data include some intergers, so I assume we validate both ints and floats
-            return value > 0
-        case 'engineAmperage':
-            return Number.isInteger(value) && value > 0;
-        default:
-            return false;
-    };
+    isValid: boolean;
 }
 
 export const CharacteristicCell: React.FC<ICharacteristicCell> = React.memo((props: ICharacteristicCell) => {
-    const { index, type, value } = props;
+    const { index, type, value, isValid } = props;
     console.log(`Cell from row ${index}, of type ${type} with value ${value} rendered!`);
     const dispatch = useAppDispatch();
 
@@ -35,7 +19,6 @@ export const CharacteristicCell: React.FC<ICharacteristicCell> = React.memo((pro
 
     const [cellValue, setCellValue] = React.useState<string>(value.toString());
     const [isEditing, setIsEditing] = React.useState<boolean>(false);
-    const [isValid] = React.useState<boolean>(isValidCharacteristic(type, value));
 
     const cellClickHandler = () => {
         setIsEditing(prev => !prev);
