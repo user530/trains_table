@@ -1,6 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { ITrainCharacteristic } from './types';
 import { RootState } from '../../app/store';
+import { setSelectedTrain } from '../trains/trainsSlice';
 
 interface ICharacteristicError {
     charIndex: number;
@@ -31,17 +32,20 @@ const characteristicsSlice = createSlice({
                 state.characteristics[charIndex][charName] = charValue;
             }
         },
+    },
+    extraReducers: (builder) => {
+        builder
+            // Update characteristics when train selection changes
+            .addCase(setSelectedTrain, (state, action) => {
+                if (!action.payload) return;
+
+                state.characteristics = action.payload.characteristics;
+            })
     }
 })
 
 export const { updateCharacteristic } = characteristicsSlice.actions;
 
-export const selectCharacteristic = (state: RootState, index: number, key: keyof ITrainCharacteristic): number | undefined => {
-    const characteristic = state.selectedTrainInfo.characteristics[index]
-    if (!characteristic || !(key in characteristic))
-        return undefined;
-
-    return state.selectedTrainInfo.characteristics[index][key];
-}
+export const selectAllCharacteristics = (state: RootState) => state.selectedTrainInfo.characteristics;
 
 export const characteristicsReducer = characteristicsSlice.reducer;
