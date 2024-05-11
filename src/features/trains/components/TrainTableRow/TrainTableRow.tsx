@@ -19,8 +19,8 @@ export const TrainTableRow: React.FC<ITrainTableRow> = (props: ITrainTableRow) =
 
     return (
         <tr onClick={clickHandler}>
-            <td>{name}</td>
-            <td>{description}</td>
+            <td className='border px-4 py-3 hover:cursor-pointer'>{name}</td>
+            <td className='border px-4 py-3 hover:cursor-pointer'>{description}</td>
         </tr>
     );
 }
