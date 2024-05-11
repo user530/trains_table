@@ -62,6 +62,8 @@ const characteristicsSlice = createSlice({
                 if (!action.payload) return;
 
                 state.characteristics = action.payload.characteristics;
+                // Clear the erros when we change characteristics
+                state.errors = [];
             })
     }
 })
