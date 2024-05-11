@@ -1,11 +1,14 @@
 import React from 'react';
 import { useAppDispatch } from '../../app/hooks';
-import { updateCharacteristic } from './characteristicsSlice';
+import { selectSpecifiedError, updateCharacteristic } from './characteristicsSlice';
 import { ITrainCharacteristic } from './types';
+import { useSelector } from 'react-redux';
 
 // const { index, type, value, isValid } = props;
 export const useCharacteristicCell = (value: number, index: number, type: keyof ITrainCharacteristic) => {
     const dispatch = useAppDispatch();
+
+    const isValid = !useSelector(state => selectSpecifiedError(state, {charIndex: index, charName: type}));
 
     const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -62,6 +65,7 @@ export const useCharacteristicCell = (value: number, index: number, type: keyof 
     );
 
     return {
+        isValid,
         inputRef,
         cellValue,
         isEditing,

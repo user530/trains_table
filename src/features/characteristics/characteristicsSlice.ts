@@ -1,10 +1,10 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSelector, createSlice } from '@reduxjs/toolkit';
 import { ITrainCharacteristic } from './types';
 import { RootState } from '../../app/store';
 import { setSelectedTrain } from '../trains/trainsSlice';
 import { isValidCharacteristic } from './validation'
 
-interface ICharacteristicError {
+export interface ICharacteristicError {
     charIndex: number;
     charName: keyof ITrainCharacteristic;
 }
@@ -70,5 +70,13 @@ export const { updateCharacteristic } = characteristicsSlice.actions;
 
 export const selectAllCharacteristics = (state: RootState) => state.selectedTrainInfo.characteristics;
 export const selectCharacteristicsErrors = (state: RootState) => state.selectedTrainInfo.errors;
+export const selectSpecifiedError = createSelector(
+    [
+        selectCharacteristicsErrors,
+        (state, props: ICharacteristicError) => props.charIndex,
+        (state, props: ICharacteristicError) => props.charName,
+    ],
+    (allCharErrors, charIndex, charName) => allCharErrors.some(err => err.charIndex === charIndex && err.charName === charName)
+)
 
 export const characteristicsReducer = characteristicsSlice.reducer;

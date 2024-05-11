@@ -6,14 +6,14 @@ interface ICharacteristicCell {
     index: number;
     type: keyof ITrainCharacteristic;
     value: number;
-    isValid: boolean;
 }
 
 export const CharacteristicCell: React.FC<ICharacteristicCell> = React.memo(
     (props: ICharacteristicCell) => {
-        const { index, type, value, isValid } = props;
+        const { index, type, value } = props;
         console.log(`Cell from row ${index}, of type ${type} with value ${value} rendered!`);
         const {
+            isValid,
             inputRef,
             cellValue,
             isEditing,
@@ -44,4 +44,4 @@ export const CharacteristicCell: React.FC<ICharacteristicCell> = React.memo(
             </td>
         );
     }
-)
+);
