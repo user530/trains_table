@@ -26,19 +26,22 @@ export const CharacteristicCell: React.FC<ICharacteristicCell> = React.memo(
         return (
             <td
                 onClick={cellClickHandler}
-                style={!isValid ? { backgroundColor: 'red', color: 'white' } : {}}
+                className={'border px-4 py-3 hover:cursor-pointer relative ' + (!isValid ? 'bg-red-200' : '')}
             >
                 {
                     isEditing
                         ?
-                        <input
-                            ref={inputRef}
-                            type='text'
-                            value={cellValue}
-                            onChange={changeHandler}
-                            onKeyDown={keyPressHandler}
-                            onBlur={blurHandler}
-                        />
+                        <div className='absolute inline-block inset-0'>
+                            <input
+                                className='w-full h-full text-center border-0 focus:ring-0 focus:outline-none'
+                                ref={inputRef}
+                                type='text'
+                                value={cellValue}
+                                onChange={changeHandler}
+                                onKeyDown={keyPressHandler}
+                                onBlur={blurHandler}
+                            />
+                        </div>
                         : cellValue
                 }
             </td>
