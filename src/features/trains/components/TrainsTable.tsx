@@ -1,10 +1,9 @@
 import React from 'react';
-import { TrainTableRow } from '../TrainTableRow/TrainTableRow';
-import { loadTrains, selectAllTrains, selectError, selectLoadingState } from '../../trainsSlice';
-import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
+import { TrainTableRow } from './TrainTableRow';
+import { loadTrains, selectAllTrains, selectError, selectLoadingState } from '../trainsSlice';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 
 export const TrainsTable = () => {
-    console.log('Trains Table rendered!');
     const dispatch = useAppDispatch();
     const trains = useAppSelector(selectAllTrains);
     const isLoading = useAppSelector(selectLoadingState);

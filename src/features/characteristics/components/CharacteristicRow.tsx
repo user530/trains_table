@@ -11,7 +11,7 @@ export const CharacteristicRow: React.FC<ICharacteristicRow> = React.memo(
     (props: ICharacteristicRow) => {
         const { rowIndex, rowCharacteristics } = props;
         const { engineAmperage, force, speed } = rowCharacteristics;
-        console.log(`Row ${rowIndex} rendered`)
+
 
         return (
             <tr className='border-solid border-b-2 border-gray-200 last:border-0 hover:cursor-pointer'>

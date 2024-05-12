@@ -1,8 +1,6 @@
 import { PropsWithChildren } from 'react';
 
 export const CharacteristicsTable = ({ children }: PropsWithChildren) => {
-    console.log('Characteristics Table rendered!');
-
     return (
         <table className='table-auto w-full mb-4 text-center'>
             <thead>

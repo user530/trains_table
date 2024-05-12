@@ -11,7 +11,7 @@ interface ICharacteristicCell {
 export const CharacteristicCell: React.FC<ICharacteristicCell> = React.memo(
     (props: ICharacteristicCell) => {
         const { index, type, value } = props;
-        console.log(`Cell from row ${index}, of type ${type} with value ${value} rendered!`);
+
         const {
             isValid,
             inputRef,

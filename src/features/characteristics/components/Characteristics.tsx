@@ -5,7 +5,6 @@ import { CharacteristicRow } from './CharacteristicRow';
 import { CharacteristicsTable } from './CharacteristicsTable';
 
 export const Characteristics = () => {
-    console.log('Characteristics rendered');
     const selectedTrain = useAppSelector(selectChosenTrain);
     const characteristics = useAppSelector(selectAllCharacteristics);
     const charErrors = useAppSelector(selectCharacteristicsErrors);

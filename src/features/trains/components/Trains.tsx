@@ -1,4 +1,4 @@
-import { TrainsTable } from './TrainsTable/TrainsTable';
+import { TrainsTable } from './TrainsTable';
 
 export const Trains = () => {
     return (
