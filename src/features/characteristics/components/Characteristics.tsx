@@ -21,7 +21,7 @@ export const Characteristics = () => {
         );
 
         console.log(sortedCharacteristics);
-    }
+    };
 
     return (
         <div className='w-full md:w-2/3 flex flex-col'>
@@ -45,7 +45,7 @@ export const Characteristics = () => {
             </div>
 
             <button
-                className='bg-gray-500 hover:bg-gray-700 text-white font-bold py-4 px-4 rounded block mx-auto mt-10 disabled:cursor-not-allowed'
+                className='bg-white border-solid border-2 border-gray-500 text-gray-700 hover:bg-gray-700 hover:text-white active:bg-gray-900 font-bold py-4 px-4 rounded block mx-auto mt-10 disabled:cursor-not-allowed transition duration-300'
                 disabled={charErrors.length > 0}
                 onClick={btnClickHandler}
             >Отправить данные</button>

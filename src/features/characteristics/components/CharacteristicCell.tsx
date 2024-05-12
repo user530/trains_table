@@ -26,7 +26,7 @@ export const CharacteristicCell: React.FC<ICharacteristicCell> = React.memo(
         return (
             <td
                 onClick={cellClickHandler}
-                className={'border px-4 py-3 hover:cursor-pointer relative ' + (!isValid ? 'bg-red-200' : '')}
+                className={'border px-4 py-3 relative hover:bg-gray-100' + (!isValid ? ' bg-red-200' : '')}
             >
                 {
                     isEditing

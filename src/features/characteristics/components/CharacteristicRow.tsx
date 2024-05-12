@@ -14,7 +14,7 @@ export const CharacteristicRow: React.FC<ICharacteristicRow> = React.memo(
         console.log(`Row ${rowIndex} rendered`)
 
         return (
-            <tr>
+            <tr className='border-solid border-b-2 border-gray-200 last:border-0 hover:cursor-pointer'>
                 <CharacteristicCell
                     key={'engineAmperage' + engineAmperage}
                     index={rowIndex}
