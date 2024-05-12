@@ -14,14 +14,14 @@ export const TrainsTable = () => {
         () => {
             dispatch(loadTrains());
         },
-        []
-    )
+        [dispatch]
+    );
 
     if (isLoading)
         return <Spinner />;
 
     if (error)
-        return <span>Error: {error}</span>
+        return <span>Error: {error}</span>;
 
     return (
         <table className='table-auto w-full mb-4'>
@@ -40,7 +40,7 @@ export const TrainsTable = () => {
                 }
             </tbody>
         </table >
-    )
+    );
 }
 
 export const Spinner = () => {
@@ -62,5 +62,5 @@ export const Spinner = () => {
             className='spinner border-t-4 border-b-4 border-blue-500 rounded-full w-12 h-12 animate-spin'
             style={spinAnimation}
         ></div>
-    )
+    );
 } 
